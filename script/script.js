@@ -1,13 +1,5 @@
-let money = 5, 
-    income = 'Hi', 
-    addExpenses = {
-        a: 1,
-        b: 'js'
-    }, 
-    deposit = null, 
-    mission = [1, 2, 3], 
-    period = true;
+let money, income, addExpenses, deposit, mission, period;
 
-    console.log(mission);
+console.log('Исправил ошибки');
 
-    alert('Не первый мой алерт.');
+alert('Не первый мой алерт.');
