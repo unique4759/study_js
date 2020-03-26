@@ -8,6 +8,6 @@ let money = 5,
     mission = [1, 2, 3], 
     period = true;
 
-    console.log(addExpenses);
+    console.log(mission);
 
     alert('Не первый мой алерт.');
