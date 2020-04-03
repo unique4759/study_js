@@ -4,80 +4,92 @@ function isNum(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-let money, 
-    income = 'фриланс', 
-    addExpenses = 'квартира, Еда, подарки', 
-    deposit = false, 
-    mission = 500000, 
-    period = 3;
+let money;
 
 function start() {
     do{
         money = prompt('Ваш месячный доход?');
     }
-    while(!isNum(money));
+    while(!isNum(money) || !money);
 }
 start();
 
-function showTypeOf () {
-    console.log(typeof money, typeof income, typeof deposit);
-}
-showTypeOf();
+let appData = {
+    income: {},
+    addIncome: [],
+    expenses: {},
+    addExpenses: [],
+    deposit: false,
+    mission: 500000,
+    period: 10,
+    asking: function () {
+        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 
-let budgetDay = money / 30;
+        appData.addExpenses = addExpenses.toLowerCase().split(', ');
+        appData.deposit = confirm('Есть ли у Вас депозит в банке?');
 
-addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-deposit = Boolean(confirm('Есть ли у вас депозит в банке?'));
-
-let expenses = [];
-
-function getExpensesMonth() {
-    let sum = 0;
-
-    for (let i = 0; i < 2; i++) {
-        expenses[i] = prompt('Введите обязательную статью расходов?');
-
-        const howAmount = +prompt('Во сколько это обойдется?');
-
-        if(isNum(howAmount)) {
-            sum += howAmount;
+        for (let i = 0; i < 2; i++) {
+            let ask = prompt('Введите обязательную статью расходов?');
+            appData.expenses[ask] = +prompt('Во сколько это обойдется?');
         }
+        // console.log(appData.expenses);
+
+        return appData.addExpenses;
+    },
+    budgetDay: 0,
+    budgetMonth: 0,
+    expensesMonth: 0,
+};
+
+appData.asking();
+
+appData.budget = money;
+
+appData.getExpensesMonth = function () {
+    for (let key in appData.expenses) {
+        appData.expensesMonth += appData.expenses[key];
     }
-    console.log(expenses);
-    return sum;
-}
+    console.log(appData.expensesMonth);
 
-let expensesAmount = getExpensesMonth();
+    return appData.expensesMonth;
+};
 
-console.log(expensesAmount);
+// let expensesAmount = appData.getExpensesMonth();
+// console.log(expensesAmount);
 
-console.log(addExpenses.split(', '));
+appData.getBudget = function () {
+    appData.budgetDay = appData.budget / 30;
+    appData.budgetMonth = appData.budget - appData.getExpensesMonth();
+    // return money - expensesAmount;
+};
+appData.getBudget();
+// let accumulatedMonth = appData.getBudget();
 
-function getAccumulatedMonth() {
-    return money - expensesAmount;
-}
+appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+// console.log('Бюджет на день: ' + appData.budgetDay + ' рублей');
 
-let accumulatedMonth = getAccumulatedMonth();
-
-function getTargetMonth() {
-    let calcMonth = Math.ceil(mission / accumulatedMonth);
+appData.getTargetMonth = function () {
+    let calcMonth = Math.ceil(appData.mission / appData.budgetMonth);
 
     return calcMonth > 0 ? 'Цель будет достигнута за: ' + calcMonth + ' месяцев' : 'Цель не будет достигнута';
-}
-console.log(getTargetMonth());
+};
+console.log(appData.getTargetMonth());
 
-budgetDay = Math.floor(accumulatedMonth / 30);
-console.log('Бюджет на день: ' + budgetDay + ' рублей');
-
-function getStatusIncome() {
-    if (budgetDay >= 1200) {
+appData.getStatusIncome = function () {
+    if (appData.budgetDay >= 1200) {
         return 'У вас высокий уровень дохода';
-    } else if (budgetDay > 600 && budgetDay < 1200) {
+    } else if (appData.budgetDay > 600 && appData.budgetDay < 1200) {
         return 'У вас средний уровень дохода';
-    } else if (budgetDay <= 600 || budgetDay === 0) {
+    } else if (appData.budgetDay <= 600 || appData.budgetDay === 0) {
         return 'К сожалению, у вас уровень дохода ниже среднего';
     } else {
         return 'Что то пошло не так';
     }
+};
+console.log(appData.getStatusIncome());
+
+console.log('Наша программа включает в себя данные:');
+
+for(let key in appData) {
+    console.log(key + ': ' + appData[key]);
 }
-console.log(getStatusIncome());
