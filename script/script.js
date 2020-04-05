@@ -30,7 +30,14 @@ let appData = {
 
         for (let i = 0; i < 2; i++) {
             let ask = prompt('Введите обязательную статью расходов?');
-            appData.expenses[ask] = +prompt('Во сколько это обойдется?');
+            let howMatch;
+
+            do{
+                howMatch = prompt('Во сколько это обойдется?');
+            }
+            while(!isNum(howMatch) || !howMatch);
+
+            appData.expenses[ask] = +howMatch;
         }
         // console.log(appData.expenses);
 
