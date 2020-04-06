@@ -42,7 +42,12 @@ let appData = {
             appData.income[itemIncome] = cashIncome;
         }
 
-        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+        let addExpenses;
+
+        do{
+            addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+        }
+        while(!isNum(addExpenses) || !addExpenses);
 
         appData.addExpenses = addExpenses.toLowerCase().split(', ');
         appData.deposit = confirm('Есть ли у Вас депозит в банке?');
@@ -132,7 +137,7 @@ appData.getInfoDeposut = function() {
         while(!isNum(appData.moneyDeposit) || !appData.moneyDeposit);
     }
 };
-// appData.getInfoDeposut();
+appData.getInfoDeposut();
 
 appData.calcSavedMoney = function () {
     return appData.budgetMonth * appData.period;
@@ -144,7 +149,7 @@ for(let key in appData) {
     console.log(key + ': ' + appData[key]);
 }
 
-// console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney());
+console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney());
 
 let expensesString = '';
 appData.addExpenses.forEach(function (item) {
