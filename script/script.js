@@ -20,17 +20,41 @@ let appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 500000,
     period: 10,
     asking: function () {
+        if(confirm('Есть ли Вас дополнительный источник заработка?')) {
+            let itemIncome,
+                cashIncome;
+
+            do{
+                itemIncome = prompt('Какой у Вас дополнительный заработок?');
+            }
+            while(+itemIncome || !itemIncome);
+
+            do{
+                cashIncome = prompt('Сколько в месяц Вы на этом зарабатываете?');
+            }
+            while(!isNum(cashIncome) || !cashIncome);
+
+            appData.income[itemIncome] = cashIncome;
+        }
+
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 
         appData.addExpenses = addExpenses.toLowerCase().split(', ');
         appData.deposit = confirm('Есть ли у Вас депозит в банке?');
 
         for (let i = 0; i < 2; i++) {
-            let ask = prompt('Введите обязательную статью расходов?');
-            let howMatch;
+            let ask,
+                howMatch;
+
+            do{
+                ask = prompt('Введите обязательную статью расходов?');
+            }
+            while(+ask || !ask);
 
             do{
                 howMatch = prompt('Во сколько это обойдется?');
@@ -95,8 +119,36 @@ appData.getStatusIncome = function () {
 };
 console.log(appData.getStatusIncome());
 
+appData.getInfoDeposut = function() {
+    if(appData.deposit) {
+        do{
+            appData.percentDeposit = prompt('Какой годовой процент?');
+        }
+        while(!isNum(appData.percentDeposit) || !appData.percentDeposit);
+
+        do{
+            appData.moneyDeposit = prompt('Какая сумма заложена?');
+        }
+        while(!isNum(appData.moneyDeposit) || !appData.moneyDeposit);
+    }
+};
+// appData.getInfoDeposut();
+
+appData.calcSavedMoney = function () {
+    return appData.budgetMonth * appData.period;
+};
+
 console.log('Наша программа включает в себя данные:');
 
 for(let key in appData) {
     console.log(key + ': ' + appData[key]);
 }
+
+// console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney());
+
+let expensesString = '';
+appData.addExpenses.forEach(function (item) {
+    expensesString += item[0].toUpperCase() + item.substr(1).toLowerCase() + ', ';
+});
+console.log(expensesString.slice(0, -2));
+
