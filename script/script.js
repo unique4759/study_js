@@ -47,7 +47,7 @@ let appData = {
         do{
             addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
         }
-        while(!isNum(addExpenses) || !addExpenses);
+        while(+addExpenses || !addExpenses);
 
         appData.addExpenses = addExpenses.toLowerCase().split(', ');
         appData.deposit = confirm('Есть ли у Вас депозит в банке?');
