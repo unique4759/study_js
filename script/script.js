@@ -156,4 +156,3 @@ appData.addExpenses.forEach(function (item) {
     expensesString += item[0].toUpperCase() + item.substr(1).toLowerCase() + ', ';
 });
 console.log(expensesString.slice(0, -2));
-
