@@ -157,26 +157,56 @@
 // });
 // console.log(expensesString.slice(0, -2));
 
-let button = document.getElementById('start'),
-    plusOne = document.getElementsByTagName('button')[0],
-    plusTwo = document.getElementsByTagName('button')[1],
-    checkBox = document.querySelector('#deposit-check'),
-    additionalIncomes = document.querySelectorAll('.additional_income-item'),
-    budgetDay = document.getElementsByClassName('result-total')[1],
-    expensesMonth = document.getElementsByClassName('result-total')[2],
-    additionalIncome = document.getElementsByClassName('result-total')[3],
-    additionalExpenses = document.getElementsByClassName('result-total')[4],
-    incomePeriod = document.getElementsByClassName('result-total')[5],
-    targetMonth = document.getElementsByClassName('result-total')[6],
-    cancel = document.getElementById('cancel'),
-    salaryAmount = document.querySelector('.salary-amount'),
-    incomeTitle = document.querySelector('.income-title'),
-    incomeAmount = document.querySelector('.income-amount'),
-    expensesTitle = document.querySelector('.expenses-title'),
-    expensesAmount = document.querySelector('.expenses-amount'),
-    additionalExpensesItem = document.querySelector('.additional_expenses-item'),
-    depositBank = document.querySelector('.deposit-bank'),
-    depositAmount = document.querySelector('.deposit-amount'),
-    depositPercent = document.querySelector('.deposit-percent'),
-    targetAmount = document.querySelector('.target-amount'),
-    periodSelect = document.querySelector('.period-select');
+// let button = document.getElementById('start'),
+//     plusOne = document.getElementsByTagName('button')[0],
+//     plusTwo = document.getElementsByTagName('button')[1],
+//     checkBox = document.querySelector('#deposit-check'),
+//     additionalIncomes = document.querySelectorAll('.additional_income-item'),
+//     budgetDay = document.getElementsByClassName('result-total')[1],
+//     expensesMonth = document.getElementsByClassName('result-total')[2],
+//     additionalIncome = document.getElementsByClassName('result-total')[3],
+//     additionalExpenses = document.getElementsByClassName('result-total')[4],
+//     incomePeriod = document.getElementsByClassName('result-total')[5],
+//     targetMonth = document.getElementsByClassName('result-total')[6],
+//     cancel = document.getElementById('cancel'),
+//     salaryAmount = document.querySelector('.salary-amount'),
+//     incomeTitle = document.querySelector('.income-title'),
+//     incomeAmount = document.querySelector('.income-amount'),
+//     expensesTitle = document.querySelector('.expenses-title'),
+//     expensesAmount = document.querySelector('.expenses-amount'),
+//     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
+//     depositBank = document.querySelector('.deposit-bank'),
+//     depositAmount = document.querySelector('.deposit-amount'),
+//     depositPercent = document.querySelector('.deposit-percent'),
+//     targetAmount = document.querySelector('.target-amount'),
+//     periodSelect = document.querySelector('.period-select');
+
+let allBooks = document.querySelector('.books'),
+    books = document.querySelectorAll('.book');
+
+allBooks.prepend(books[1]);  
+books[2].after(books[4]);  
+allBooks.append(books[2]);  
+
+document.body.style.backgroundImage = 'url(./image/you-dont-know-js.jpg)';
+
+books[4].querySelector('h2 a').textContent = 'Книга 3. this и Прототипы Объектов';
+
+document.querySelector('.adv').remove();
+
+let bookTwo = books[0].querySelectorAll('li');
+bookTwo[3].after(bookTwo[2]);
+bookTwo[3].after(bookTwo[6]);
+bookTwo[6].after(bookTwo[8]);
+bookTwo[10].before(bookTwo[2]);
+
+let bookFive = books[5].querySelectorAll('li');
+bookFive[2].after(bookFive[9]);
+bookFive[4].after(bookFive[5]);
+bookFive[6].after(bookFive[8]);
+bookFive[6].before(bookFive[2]);
+bookFive[8].before(bookFive[5]);
+bookFive[5].before(bookFive[7]);
+
+let bookSix = books[2].querySelectorAll('li');
+bookSix[9].insertAdjacentHTML('beforebegin', '<li>Глава 8: За пределами ES6</li>')
