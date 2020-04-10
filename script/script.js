@@ -147,8 +147,8 @@ appData.showResult = function () {
 
     periodSelect.addEventListener('change', function (e) {
         periodSelect.value = e.target.value;
+        incomePeriod.value = appData.calcSavedMoney();
     });
-
     incomePeriod.value = appData.calcSavedMoney();
 };
 
