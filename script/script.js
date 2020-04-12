@@ -30,6 +30,22 @@ let calculate = document.getElementById('start'),
     periodSelect = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount');
 
+let nameInputs = document.querySelectorAll('input[placeholder="Наименование"]');
+
+nameInputs.forEach(function (item) {
+    item.addEventListener('input', function () {
+        item.value = item.value.replace(/[^а-яёЁ\s.,\/#!$%\^&\*;:{}=\-_`~()]/gi, '');
+    });
+});
+
+let amountInputs = document.querySelectorAll('input[placeholder="Сумма"]');
+
+amountInputs.forEach(function (item) {
+    item.addEventListener('input', function () {
+        item.value = item.value.replace(/[^\d]/g, '');
+    });
+});
+
 let appData = {
     budget: 0,
     budgetDay: 0,
@@ -45,6 +61,10 @@ let appData = {
     moneyDeposit: 0,
     addExpensesBlock: function () {
         let cloneExpensesItems = expensesItems[0].cloneNode(true);
+        
+        cloneExpensesItems.querySelector('.expenses-title').value = '';
+        cloneExpensesItems.querySelector('.expenses-amount').value = '';
+
         expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
 
@@ -64,6 +84,10 @@ let appData = {
     },
     addIncomeBlock: function () {
         let cloneIncomeItems = incomeItems[0].cloneNode(true);
+
+        cloneIncomeItems.querySelector('.income-title').value = '';
+        cloneIncomeItems.querySelector('.income-amount').value = '';
+
         incomeItems[0].parentNode.insertBefore(cloneIncomeItems, incomePlus);
         incomeItems = document.querySelectorAll('.income-items');
 
@@ -141,8 +165,8 @@ appData.showResult = function () {
     budgetMonth.value = appData.budgetMonth;
     budgetDay.value = appData.budgetDay,
     expensesMonth.value = appData.expensesMonth;
-    additionalExpenses.value = appData.addExpenses.join(', ');
-    additionalIncome.value = appData.addIncome.join(', ');
+    additionalExpenses.value = appData.addExpenses.join(',');
+    additionalIncome.value = appData.addIncome.join(',');
     targetMonth.value = appData.getTargetMonth();
 
     periodSelect.addEventListener('change', function (e) {
