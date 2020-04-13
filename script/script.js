@@ -30,21 +30,23 @@ let calculate = document.getElementById('start'),
     periodSelect = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount');
 
-let nameInputs = document.querySelectorAll('input[placeholder="Наименование"]');
+function validateInputs () {
+    let nameInputs = document.querySelectorAll('input[placeholder="Наименование"]'),
+        amountInputs = document.querySelectorAll('input[placeholder="Сумма"]');
 
-nameInputs.forEach(function (item) {
-    item.addEventListener('input', function () {
-        item.value = item.value.replace(/[^а-яёЁ\s.,\/#!$%\^&\*;:{}=\-_`~()]/gi, '');
+    nameInputs.forEach(function (item) {
+        item.addEventListener('input', function () {
+            item.value = item.value.replace(/[^а-яёЁ\s.,\/#!$%\^&\*;:{}=\-_`~()]/gi, '');
+        });
     });
-});
 
-let amountInputs = document.querySelectorAll('input[placeholder="Сумма"]');
-
-amountInputs.forEach(function (item) {
-    item.addEventListener('input', function () {
-        item.value = item.value.replace(/[^\d]/g, '');
+    amountInputs.forEach(function (item) {
+        item.addEventListener('input', function () {
+            item.value = item.value.replace(/[^\d]/g, '');
+        });
     });
-});
+}
+validateInputs();
 
 let appData = {
     budget: 0,
@@ -68,6 +70,8 @@ let appData = {
         expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
 
+        validateInputs();
+
         if(expensesItems.length === 3) {
             expensesPlus.style.display = 'none';
         }
@@ -90,6 +94,8 @@ let appData = {
 
         incomeItems[0].parentNode.insertBefore(cloneIncomeItems, incomePlus);
         incomeItems = document.querySelectorAll('.income-items');
+
+        validateInputs();
 
         if(incomeItems.length === 3) {
             incomePlus.style.display = 'none';
@@ -128,7 +134,7 @@ let appData = {
     },
     changeRange: function(e) {
         periodAmount.textContent = e.target.value;
-    }
+    },
 };
 
 appData.start = function() {
