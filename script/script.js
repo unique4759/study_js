@@ -140,12 +140,12 @@ AppData.prototype.showResult = function () {
     additionalExpenses.value = this.addExpenses.join(', ');
     additionalIncome.value = this.addIncome.join(', ');
     targetMonth.value = this.getTargetMonth();
-
+    
     periodSelect.addEventListener('change', (e) => {
         periodSelect.value = e.target.value;
-        incomePeriod.value = this.calcSavedMone.apply(this);
+        incomePeriod.value = this.calcSavedMoney.bind(this);
     });
-    incomePeriod.value = this.calcSavedMoney.apply(this);
+    incomePeriod.value = this.calcSavedMoney.bind(this);
 };
 AppData.prototype.changeRange = function(e) {
     periodAmount.textContent = e.target.value;
@@ -218,6 +218,8 @@ AppData.prototype.reset = function (){
     cancel.style.display = 'none';
 };
 AppData.prototype.eventListeners = function() {
+    calculate.disabled = true;
+
     salaryAmount.addEventListener('input', (e) => {
         if(e.target.value !== '') {
             calculate.disabled = false;
@@ -237,5 +239,3 @@ AppData.prototype.eventListeners = function() {
 let appData = new AppData();
 
 appData.eventListeners();
-
-calculate.disabled = true;
