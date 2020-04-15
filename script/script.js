@@ -47,39 +47,30 @@ class AppData {
     start() {
         this.budget = +salaryAmount.value;
 
-        this.getExpenses();
-        this.getIncome();
+        this.getExpInc();
         this.getExpensesMonth();
         this.getBudget();
-        this.getAddExpenses();
-        this.getAddIncome();
+        this.getAddExpInc();
     
         this.showResult();
     
         this.inputsDisabled();
     }
 
-    getExpenses() {
-        expensesItems.forEach((item) => {
-            const itemExpenses = item.querySelector('.expenses-title').value;
-            const cashExpenses = item.querySelector('.expenses-amount').value;
+    getExpInc() {
+        const count = item => {
+            const startStr = item.className.split('-')[0];
+            const itemTitle = item.querySelector(`.${startStr}-title`).value;
+            const cashAmount = item.querySelector(`.${startStr}-amount`).value;
     
-            if(itemExpenses !== '' && cashExpenses !== '') {
-                this.expenses[itemExpenses] = +cashExpenses;
+            if(itemTitle !== '' && cashAmount !== '') {
+                this[startStr][itemTitle] = +cashAmount;
             }
-        });
-    }
+        };
 
-    getIncome() {
-        incomeItems.forEach((item) => {
-            const itemIncome = item.querySelector('.income-title').value;
-            const cashIncome = item.querySelector('.income-amount').value;
-    
-            if(itemIncome !== '' && cashIncome !== '') {
-                this.income[itemIncome] = +cashIncome;
-            }
-        });
-    
+        expensesItems.forEach(count);
+        incomeItems.forEach(count);
+
         for (let key in this.income) {
             this.incomeMonth += +this.income[key];
         }
@@ -97,43 +88,31 @@ class AppData {
         this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
         this.budgetDay = Math.floor(this.budgetMonth / 30);
     }
-
-    getAddExpenses() {
+    
+    getAddExpInc() {
         const addExpenses = additionalExpensesItem.value.split(',');
-        addExpenses.forEach((item) => {
-            item = item.trim();
+
+        const itemValue = item => {
+            const checkArr = item.value ? this.addIncome : this.addExpenses;
+            item = item.value || item.value === '' ? item.value : item;
             if(item !== '') {
-                this.addExpenses.push(item);
+                checkArr.push(item.trim());
             }
-        });
+        };
+
+        additionalIncomes.forEach(itemValue);
+        addExpenses.forEach(itemValue);
     }
 
-    getAddIncome() {
-        additionalIncomes.forEach((item) => {
-            const itemValue = item.value.trim();
-            if(itemValue !== '') {
-                this.addIncome.push(itemValue);
-            }
-        });
-    }
+    addExpIncBlock(type, plus) {
+        let items = type === 'income' ? incomeItems : expensesItems;
+        const cloneItems = items[0].cloneNode(true);
 
-    addExpensesBlock() {
-        const cloneExpensesItems = expensesItems[0].cloneNode(true);
-        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesPlus);
-        expensesItems = document.querySelectorAll('.expenses-items');
-    
-        if(expensesItems.length === 3) {
-            expensesPlus.style.display = 'none';
-        }
-    }
+        items[0].parentNode.insertBefore(cloneItems, plus);
+        items = document.querySelectorAll(`.${type}-items`);
 
-    addIncomeBlock() {
-        const cloneIncomeItems = incomeItems[0].cloneNode(true);
-        incomeItems[0].parentNode.insertBefore(cloneIncomeItems, incomePlus);
-        incomeItems = document.querySelectorAll('.income-items');
-    
-        if(incomeItems.length === 3) {
-            incomePlus.style.display = 'none';
+        if(items.length === 3) {
+            plus.style.display = 'none';
         }
     }
 
@@ -186,21 +165,23 @@ class AppData {
         Object.assign(this, copy);
     
         const leftPartInputs = document.querySelectorAll('.data input[type="text"]');
-        
-        if(incomeItems.length === 3) {
+        const incomeInputs = document.querySelectorAll('.income-items');
+        const expensesInputs = document.querySelectorAll('.expenses-items');
+
+        if(incomeInputs.length === 3) {
             incomePlus.style.display = 'block';
         }
 
-        incomeItems.forEach((item, index) => {
+        incomeInputs.forEach((item, index) => {
             if(index !== 0) {
                 item.remove();
             }
         });
     
-        if(expensesItems.length === 3) {
+        if(expensesInputs.length === 3) {
             expensesPlus.style.display = 'block';
         }
-        expensesItems.forEach((item, index) => {
+        expensesInputs.forEach((item, index) => {
             if(index !== 0) {
                 item.remove();
             }
@@ -244,8 +225,8 @@ class AppData {
         calculate.addEventListener('click', () => this.start());
         cancel.addEventListener('click', () => this.reset());
         
-        expensesPlus.addEventListener('click', () => this.addExpensesBlock());
-        incomePlus.addEventListener('click', () => this.addIncomeBlock());
+        expensesPlus.addEventListener('click', () => this.addExpIncBlock('expenses', expensesPlus));
+        incomePlus.addEventListener('click', () => this.addExpIncBlock('income', incomePlus));
         periodSelect.addEventListener('input', (e) => this.changeRange(e));
     }
 };
