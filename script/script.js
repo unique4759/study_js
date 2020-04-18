@@ -241,6 +241,7 @@ class AppData {
 
                 if(userValue < 0 || userValue > 100 ) {
                     calculate.disabled = true;
+                    depositPercent.value = '';
                     alert('Введите корректное значение в поле проценты');
                 } else {
                     calculate.disabled = false;
